@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   fontFamilyOptions,
   fontColors,
+  defaultArticleState,
   backgroundColors,
   contentWidthArr,
   fontSizeOptions,
@@ -12,6 +13,7 @@ import { Button } from 'src/ui/button';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Select } from 'src/ui/select';
 import { Separator } from 'src/ui/separator';
+import { Text } from 'src/ui/text';
 
 import type React from 'react';
 import type { ArticleStateType } from 'src/constants/articleProps';
@@ -19,21 +21,19 @@ import type { ArticleStateType } from 'src/constants/articleProps';
 import styles from './ArticleParamsForm.module.scss';
 
 type ArticleParamsFormProps = {
-  initialState: ArticleStateType;
-  currentState: ArticleStateType;
+  onReset: () => void;
   onApply: (newState: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = ({
-  initialState,
-  currentState,
   onApply,
+  onReset,
 }: ArticleParamsFormProps): React.JSX.Element => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [formState, setFormState] = useState<ArticleStateType>(defaultArticleState);
+  const [formKey, setFormKey] = useState(0);
 
-  const [formState, setFormState] = useState<ArticleStateType>(currentState);
   const sidebarRef = useRef<HTMLDivElement>(null);
-
   const handleClickOutside = (event: MouseEvent): void => {
     if (
       isSidebarOpen &&
@@ -44,26 +44,25 @@ export const ArticleParamsForm = ({
     }
   };
 
-  useEffect((): void => {
+  useEffect(() => {
     if (isSidebarOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      return (): void => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
     }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return undefined;
   }, [isSidebarOpen]);
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     onApply(formState);
-    setIsSidebarOpen(false);
   };
 
   const handleReset = (): void => {
-    onApply(initialState);
+    setFormState(defaultArticleState);
+    onReset();
+    setFormKey((k) => k + 1);
   };
 
   return (
@@ -78,7 +77,9 @@ export const ArticleParamsForm = ({
         className={clsx(styles.container, isSidebarOpen && styles.container_open)}
       >
         <form className={styles.form} onSubmit={handleSubmit} onReset={handleReset}>
-          <h2 className={styles.title}>ЗАДАЙТЕ ПАРАМЕТРЫ</h2>
+          <Text as="h2" size={31} weight={800} uppercase>
+            Задайте параметры
+          </Text>
 
           <Select
             title="Шрифт"
@@ -90,6 +91,7 @@ export const ArticleParamsForm = ({
           />
 
           <RadioGroup
+            key={formKey}
             title="Размер шрифта"
             name="fontSize"
             selected={formState.fontSizeOption}
