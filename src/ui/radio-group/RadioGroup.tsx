@@ -2,6 +2,7 @@ import { Text } from 'src/ui/text';
 
 import { Option } from './Option';
 
+import type React from 'react';
 import type { OptionType } from 'src/constants/articleProps';
 
 import styles from './RadioGroup.module.scss';
@@ -20,7 +21,7 @@ export const RadioGroup = (props: RadioGroupProps): React.JSX.Element => {
   const handleChange = (option: OptionType): void => onChange?.(option);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.item}>
       {title && (
         <>
           <Text weight={800} size={12} uppercase>
@@ -28,7 +29,7 @@ export const RadioGroup = (props: RadioGroupProps): React.JSX.Element => {
           </Text>
         </>
       )}
-      <div className={styles.group}>
+      <div className={styles.item}>
         {options.map((option) => (
           <Option
             key={option.value}

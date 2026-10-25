@@ -1,5 +1,6 @@
 .group {
 	display: inline-flex;
+	flex-wrap: wrap;
 	box-sizing: border-box;
 	max-width: fit-content;
 	border: 1px solid #000;
@@ -8,6 +9,7 @@
 .item {
 	position: relative;
 	display: block;
+	min-width: 0;
 }
 
 .input {
