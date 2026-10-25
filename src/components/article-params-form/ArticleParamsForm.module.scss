@@ -37,7 +37,6 @@
 
 .bottomContainer {
 	display: flex;
-	flex: 1;
-	flex-direction: row;
-	gap: 50px;
+	justify-content: space-between;
+	margin-top: auto;
 }
