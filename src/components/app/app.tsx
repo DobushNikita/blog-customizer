@@ -17,10 +17,6 @@ export const App = (): React.JSX.Element => {
     setArticleState(newState);
   };
 
-  const handleReset = (): void => {
-    setArticleState(defaultArticleState);
-  };
-
   const cssVariables: CSSProperties = {
     '--font-family': articleState.fontFamilyOption.value,
     '--font-color': articleState.fontColor.value,
@@ -35,7 +31,6 @@ export const App = (): React.JSX.Element => {
         initialState={defaultArticleState}
         currentState={articleState}
         onApply={handleApply}
-        onReset={handleReset}
       />
       <Article />
     </main>

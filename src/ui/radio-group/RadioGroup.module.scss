@@ -1,14 +1,16 @@
 .group {
-	display: inline-flex;
-	flex-wrap: wrap;
+	display: flex;
+	flex-direction: row;
 	box-sizing: border-box;
 	max-width: fit-content;
-	border: 1px solid #000;
+	border: 1px solid #000000;
+	flex-wrap: nowrap;     
+  width: 100%;
 }
 
 .item {
 	position: relative;
-	display: block;
+	display: flex;
 	min-width: 0;
 }
 
@@ -30,7 +32,7 @@
 	width: 124px;
 	height: 35px;
 	text-align: center;
-	border-right: 1px solid #000;
+	border-right: 1px solid #000000;
 	cursor: pointer;
 }
 

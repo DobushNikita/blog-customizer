@@ -17,7 +17,8 @@
 	flex-shrink: 0;
 	flex-direction: column;
 	box-sizing: border-box;
-	width: 616px;
+	width: 601px;
+	gap: 50px;
 	height: auto;
 	min-height: 100%;
 	padding: 50px 31px;
@@ -25,8 +26,18 @@
 	border-right: 1px solid #000;
 }
 
+.title {
+    font-size: 32px;
+    font-weight: 1000;
+    text-transform: uppercase;
+    margin: 0 0 24px 0;
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+}
+
 .bottomContainer {
 	display: flex;
-	justify-content: space-between;
-	margin-top: auto;
+	flex: 1;
+	flex-direction: row;
+	gap: 50px;
 }

@@ -21,63 +21,65 @@ import styles from './ArticleParamsForm.module.scss';
 type ArticleParamsFormProps = {
   initialState: ArticleStateType;
   currentState: ArticleStateType;
-  onApply: (state: ArticleStateType) => void;
-  onReset: () => void;
+  onApply: (newState: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = ({
   initialState,
   currentState,
   onApply,
-  onReset,
 }: ArticleParamsFormProps): React.JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [formState, setFormState] = useState<ArticleStateType>(currentState);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent): void => {
     if (
-      isOpen &&
+      isSidebarOpen &&
       sidebarRef.current &&
       !sidebarRef.current.contains(event.target as Node)
     ) {
-      setIsOpen(false);
+      setIsSidebarOpen(false);
     }
   };
 
   useEffect((): void => {
-    if (isOpen) {
+    if (isSidebarOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
 
-    return (): void => {
+    return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isSidebarOpen]);
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     onApply(formState);
-    setIsOpen(false);
+    setIsSidebarOpen(false);
   };
 
   const handleReset = (): void => {
-    setFormState(initialState);
-    onReset();
+    onApply(initialState);
   };
 
   return (
     <>
-      <ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+      <ArrowButton
+        isOpen={isSidebarOpen}
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
 
       <aside
         ref={sidebarRef}
-        className={clsx(styles.container, isOpen && styles.container_open)}
+        className={clsx(styles.container, isSidebarOpen && styles.container_open)}
       >
         <form className={styles.form} onSubmit={handleSubmit} onReset={handleReset}>
+          <h2 className={styles.title}>ЗАДАЙТЕ ПАРАМЕТРЫ</h2>
+
           <Select
             title="Шрифт"
             selected={formState.fontFamilyOption}
@@ -87,7 +89,13 @@ export const ArticleParamsForm = ({
             }
           />
 
-          <Separator />
+          <RadioGroup
+            title="Размер шрифта"
+            name="fontSize"
+            selected={formState.fontSizeOption}
+            options={fontSizeOptions}
+            onChange={(option) => setFormState({ ...formState, fontSizeOption: option })}
+          />
 
           <Select
             title="Цвет шрифта"
@@ -107,8 +115,6 @@ export const ArticleParamsForm = ({
             }
           />
 
-          <Separator />
-
           <Select
             title="Ширина контента"
             selected={formState.contentWidth}
@@ -116,15 +122,6 @@ export const ArticleParamsForm = ({
             onChange={(option) => setFormState({ ...formState, contentWidth: option })}
           />
 
-          <Separator />
-
-          <RadioGroup
-            title="Размер шрифта"
-            name="fontSize"
-            selected={formState.fontSizeOption}
-            options={fontSizeOptions}
-            onChange={(option) => setFormState({ ...formState, fontSizeOption: option })}
-          />
           <div className={styles.bottomContainer}>
             <Button title="Сбросить" type="clear" htmlType="reset" />
             <Button title="Применить" type="apply" htmlType="submit" />
