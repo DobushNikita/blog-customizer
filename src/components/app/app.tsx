@@ -2,10 +2,12 @@ import { useState } from 'react';
 
 import { ArticleParamsForm } from '../article-params-form/ArticleParamsForm';
 import { Article } from '../article/Article';
-import { defaultArticleState } from './../../constants/articleProps';
+import {
+  defaultArticleState,
+  type ArticleStateType,
+} from './../../constants/articleProps';
 
 import type { CSSProperties } from 'react';
-import type { ArticleStateType } from 'src/constants/articleProps';
 
 import styles from './app.module.scss';
 
@@ -28,8 +30,7 @@ export const App = (): React.JSX.Element => {
   return (
     <main className={styles.main} style={cssVariables}>
       <ArticleParamsForm
-        initialState={defaultArticleState}
-        currentState={articleState}
+        onReset={() => setArticleState(defaultArticleState)}
         onApply={handleApply}
       />
       <Article />
