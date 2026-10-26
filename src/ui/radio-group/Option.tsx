@@ -3,6 +3,7 @@ import { Text } from 'src/ui/text';
 
 import { useEnterSubmit } from './hooks/useEnterSubmit';
 
+import type React from 'react';
 import type { OptionType } from 'src/constants/articleProps';
 
 import styles from './RadioGroup.module.scss';
@@ -21,12 +22,13 @@ export const Option = (props: OptionProps): React.JSX.Element => {
 
   const optionRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = (): void => onChange?.(option);
+  const handleChange = (_e: React.ChangeEvent<HTMLInputElement>): void =>
+    onChange?.(option);
 
   useEnterSubmit({ onChange, option });
 
   const inputId = `${groupName}_radio_item_with_value__${value}`;
-  const isChecked = value === selected.title;
+  const isChecked = value === selected.value;
 
   return (
     <div

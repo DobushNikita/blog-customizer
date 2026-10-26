@@ -2,6 +2,7 @@ import { Text } from 'src/ui/text';
 
 import { Option } from './Option';
 
+import type React from 'react';
 import type { OptionType } from 'src/constants/articleProps';
 
 import styles from './RadioGroup.module.scss';
